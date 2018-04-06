@@ -4,16 +4,18 @@ import statustable from "views/statustable";
 
 export default class DataView extends JetView{
 	config(){
-
+		const _ = this.app.getService("locale")._;
 		var list = {
 			rows: [
 				{
 					view: "list",
 					id: "datalist",
-					data: ["Countries","Statuses"],
+					data: [ 
+						{value : _("Countries"), id: "Countries"},
+						{value: _("Statuses"), id: "Statuses"}],
 					autoheight: true,
-            		width: 300,
-            		scrollX: false,
+					width: 300,
+					scrollX: false,
 					select: true,
 					on: {
 						onAfterSelect: function (id) {
@@ -29,8 +31,8 @@ export default class DataView extends JetView{
 			cells: [
 				{id:"Countries", $subview:countrytable},
 				{id:"Statuses", $subview:statustable}
-			  ]
-		}
+			]
+		};
 
 		var ui ={
 			cols: [list, multiviewData]

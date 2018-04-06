@@ -1,16 +1,16 @@
 import {JetView} from "webix-jet";
 
-class SettingsView extends JetView {
+export default class SettingsView extends JetView {
 	config(){
 		const _ = this.app.getService("locale")._;
 		const lang = this.app.getService("locale").getLang();
 
 		return {
-            rows:[
+			rows:[
 				{ template:_("Settings"), type:"header" },
 				{ name:"lang", optionWidth: 120, view:"segmented", label:_("Language"), options:[
 					{id:"en", value:"English"},
-					{id:"ru", value:"Rassian"}
+					{id:"ru", value:"Russian"}
 				], click:() => this.toggleLanguage(), value:lang },
 				{}
 			]

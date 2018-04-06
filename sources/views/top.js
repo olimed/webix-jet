@@ -4,6 +4,8 @@ import {JetView, plugins} from "webix-jet";
 
 export default class TopView extends JetView{
 	config(){
+		const _ = this.app.getService("locale")._;
+
 		var header = {
 			type:"header", template:this.app.config.name
 		};
@@ -13,10 +15,10 @@ export default class TopView extends JetView{
 			width:180, layout:"y", select:true,
 			template:"<span class='webix_icon fa-#icon#'></span> #value# ",
 			data:[
-				{ value:"DashBoard", id:"start", icon:"envelope-o" },
-				{ value:"Data",		 id:"data",  icon:"briefcase" },
-				{ value:"Contacts",   id:"contacts",  icon:"users"},
-				{ value:"Settings",	 id:"settings",  icon:"cog"}
+				{ value: _("DashBoard"), id:"start", icon:"envelope-o" },
+				{ value: _("Data"),		 id:"data",  icon:"briefcase" },
+				{ value: _("Contacts"),  id:"contacts",  icon:"users"},
+				{ value: _("Settings"),	 id:"settings",  icon:"cog"}
 			]
 		};
 
