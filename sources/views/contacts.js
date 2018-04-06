@@ -1,30 +1,37 @@
 import {JetView} from "webix-jet";
 import {contacts} from "models/contacts";
+import contform from "views/contactsform";
 
 export default class ContactsView extends JetView{
 	config(){
-
         var contactsList = {
             view: "list",
-            id: "contacts:list",
+            id: "contactslist",
             template: "#Name#  #Email#",
-            select:true
+            select:true,
+            on:{
+                onAfterSelect:(id) =>{
+                    this.setParam("id", id, true);
+                    let values = this.$$("contactslist").getSelectedItem();
+                    this.app.callEvent("onContactSelected", [values]);
+                }	
+            }
         };
 
-        var contactsForm = {
-            view: "form",
-            width: 300,
-            elements: [
-                {view:"text", label:"User Name"},
-                {view:"text", label:"Email"},
-                {}
-            ]
-        };
+        let button = { 
+			view:"button",
+			label: "Add", 
+            click: function() {
+                $$("contactslist").add({Name:"Change contact", Email:"your@email.com"})
+            }
+
+		};
 
         var ui = {
             autoheight:true,
             rows:[
-                { cols: [contactsList, contactsForm]  },
+                { cols: [
+                    {rows: [contactsList, {}, button]}, {$subview:contform}]  },
                 {}
             ]
         };
@@ -32,6 +39,20 @@ export default class ContactsView extends JetView{
 		return ui;
 	}
 	init(){
-		this.$$("contacts:list").parse(contacts);
-	}
+        this.$$("contactslist").parse(contacts);
+
+        this.on(this.app, "saveData", (data)  => {
+			var id = $$("contactslist").getSelectedId();
+			$$("contactslist").updateItem(id, data);
+			
+		});
+    }
+    
+    urlChange(){
+		var id = this.getParam("id");
+        if (id) 
+            this.$$("contactslist").select(id);
+        else 
+            this.$$("contactslist").select(1);
+    }
 }
